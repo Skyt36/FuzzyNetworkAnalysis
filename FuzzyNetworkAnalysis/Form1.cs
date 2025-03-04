@@ -234,6 +234,18 @@ namespace FuzzyNetworkAnalysis
 
             label2.Text = "Вычислить время выполнения проекта\n\nВремя выполнения проекта в виде нечеткого числа:\nКритический путь:";
             label3.Text = $"[{earlyDeadlineAlpha[0].Last().interval.L}, {earlyDeadlineAlpha[5].Last().interval.L}, {earlyDeadlineAlpha[5].Last().interval.R}, {earlyDeadlineAlpha[0].Last().interval.R}]\nlabel3";
+
+            #region plot
+            List<double> X= new List<double>();
+            for (int i = 0; i < 6; i++)
+                X.Add(earlyDeadlineAlpha[i].Last().interval.L);
+            for (int i = 5; i >= 0; i--)
+                X.Add(earlyDeadlineAlpha[i].Last().interval.R);
+            List<double> Y = new List<double>() { 0, 0.2, 0.4, 0.6, 0.8, 1, 1, 0.8, 0.6, 0.4, 0.2, 0 };
+            for(int i=0;i<12;i++)
+                chart1.Series[0].Points.AddXY(X[i], Y[i]);
+            #endregion
+
         }
     }
 }
