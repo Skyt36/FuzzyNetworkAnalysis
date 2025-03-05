@@ -157,6 +157,7 @@ namespace FuzzyNetworkAnalysis
                 label2.Text = "Вычислить время выполнения проекта\n\nВ таблице не должно быть пустых ячеек";
                 return;
             }
+            label2.Text = "Вычислить время выполнения проекта";
 
             #region Алгоритм
 
