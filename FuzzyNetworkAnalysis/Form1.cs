@@ -179,12 +179,15 @@ namespace FuzzyNetworkAnalysis
 
             List<List<WorkDeadline>> earlyDeadlineAlpha = new List<List<WorkDeadline>>();
             List<List<WorkDeadline>> lateDeadlineAlpha = new List<List<WorkDeadline>>();
+            List<List<int>> CriticalTrack = new List<List<int>>();
             
             for (int i = 0; i < 6; i++) {
                 #region Ранний срок
                 List<WorkDeadline> earlyDeadlines = new List<WorkDeadline>();
                 earlyDeadlines.Add(new WorkDeadline(worksOrdered[0].Start ?? 0, new FuzzyInterval()));
+                List<List<int>> track = new List<List<int>>() { new List<int>() { worksOrdered[0].Start ?? 0 } };
                 int iterator = 0;
+
                 while (iterator < earlyDeadlines.Count)
                 {
                     for (int j = 0; j < worksOrdered.Count; j++)
@@ -196,21 +199,33 @@ namespace FuzzyNetworkAnalysis
                             {
                                 earlyDeadlines.Add(new WorkDeadline(worksOrdered[j].End ?? 0, new FuzzyInterval()));
                                 index = earlyDeadlines.Count - 1;
+                                track.Add(new List<int>());
                             }
                             earlyDeadlines[index].interval.L = Math.Max(earlyDeadlines[index].interval.L, earlyDeadlines[iterator].interval.L + alphasrezy[i][j].L);
-                            earlyDeadlines[index].interval.R = Math.Max(earlyDeadlines[index].interval.R, earlyDeadlines[iterator].interval.R + alphasrezy[i][j].R);
+                            if (earlyDeadlines[iterator].interval.R + alphasrezy[i][j].R > earlyDeadlines[index].interval.R)
+                            {
+                                earlyDeadlines[index].interval.R = earlyDeadlines[iterator].interval.R + alphasrezy[i][j].R;
+                                track[index] = track[iterator].Union(new List<int>() { worksOrdered[j].End ?? 0 }).ToList();
+                            }
                         }
                     }
                     iterator++;
                 }
+
+                int indexLast = earlyDeadlines.FindIndex(d1 => d1.work_id == earlyDeadlines.Max(d2 => d2.work_id));
+                CriticalTrack.Add(track[indexLast]);
+                var temp = earlyDeadlines[indexLast];
+                earlyDeadlines.RemoveAt(indexLast);
+                earlyDeadlines.Add(temp);
                 earlyDeadlineAlpha.Add(earlyDeadlines);
+
                 #endregion
                 #region Поздний срок
                 List<WorkDeadline> lateDeadlines = new List<WorkDeadline>();
                 double max = earlyDeadlines.Last().interval.R;
-                for (int k = 0; k < earlyDeadlines.Count; k++)
+                foreach(var deadline in earlyDeadlines)
                 {
-                    lateDeadlines.Add(new WorkDeadline(earlyDeadlines[k].work_id, new FuzzyInterval(max, max)));
+                    lateDeadlines.Add(new WorkDeadline(deadline.work_id, new FuzzyInterval(max, max)));
                 }
                 while (iterator > 0)
                 {
@@ -220,8 +235,8 @@ namespace FuzzyNetworkAnalysis
                         if (worksOrdered[j].End == lateDeadlines[iterator].work_id)
                         {
                             int index = lateDeadlines.FindIndex(d => d.work_id == worksOrdered[j].Start);
-                            lateDeadlines[index].interval.L = Math.Min(lateDeadlines[index].interval.L, lateDeadlines[iterator].interval.L - alphasrezy[i][j].L);
-                            lateDeadlines[index].interval.R = Math.Min(lateDeadlines[index].interval.R, lateDeadlines[iterator].interval.R - alphasrezy[i][j].R);
+                            lateDeadlines[index].interval.L = Math.Min(lateDeadlines[index].interval.L, lateDeadlines[iterator].interval.L - alphasrezy[i][j].R);
+                            lateDeadlines[index].interval.R = Math.Min(lateDeadlines[index].interval.R, lateDeadlines[iterator].interval.R - alphasrezy[i][j].L);
                         }
                     }
                 }
@@ -230,20 +245,61 @@ namespace FuzzyNetworkAnalysis
             }
 
             #endregion
+            #region Оценка риска
+            double? T_ = null;
+            if(double.TryParse(textBox1.Text,out double T))
+                T_= T;
 
-
-            label2.Text = "Вычислить время выполнения проекта\n\nВремя выполнения проекта в виде нечеткого числа:\nКритический путь:";
-            label3.Text = $"[{earlyDeadlineAlpha[0].Last().interval.L}, {earlyDeadlineAlpha[5].Last().interval.L}, {earlyDeadlineAlpha[5].Last().interval.R}, {earlyDeadlineAlpha[0].Last().interval.R}]\nlabel3";
-
-            #region plot
-            List<double> X= new List<double>();
+            double Sum = 0;
             for (int i = 0; i < 6; i++)
-                X.Add(earlyDeadlineAlpha[i].Last().interval.L);
+            {
+                if (T_ < earlyDeadlineAlpha[i].Last().interval.L)
+                    Sum += 0.2 * i;
+                else if (T_ <= earlyDeadlineAlpha[i].Last().interval.R)
+                    Sum += 0.2 * i * (earlyDeadlineAlpha[i].Last().interval.R - T_) / (earlyDeadlineAlpha[i].Last().interval.R - earlyDeadlineAlpha[i].Last().interval.L) ?? 0;
+            }
+            Sum /= 3;
+            #endregion
+            #region Вывод результатов
+            String criticalTrackString = "";
+            foreach (var track in CriticalTrack.Last())
+                criticalTrackString += track.ToString() + ", ";
+            label2.Text = "Вычислить время выполнения проекта\n\n" +
+                "Время выполнения проекта в виде нечеткого числа:\n" +
+                "Критический путь:\n" +
+                $"Оценка риска: {String.Format("{0:0.##}", 100 * Sum)}%";
+            label3.Text = $"[{earlyDeadlineAlpha[0].Last().interval.L}, {earlyDeadlineAlpha[5].Last().interval.L}, {earlyDeadlineAlpha[5].Last().interval.R}, {earlyDeadlineAlpha[0].Last().interval.R}]\n" +
+                criticalTrackString;
+            String label5Text = "";
+            for (int i = 0; i < 6; i++)
+            {
+                label5Text += $"Альфа-срез на уровне {String.Format("{0:0.#}", i * 0.2)}: [{earlyDeadlineAlpha[i].Last().interval.L}, {earlyDeadlineAlpha[i].Last().interval.R}]\n";
+            }
+            label5.Text = label5Text;
+            #endregion
+            #region plot
+            foreach (var series in chart1.Series)
+                series.Points.Clear();
+            List<double> X1= new List<double>();
+            for (int i = 0; i < 6; i++)
+                X1.Add(earlyDeadlineAlpha[i].Last().interval.L);
             for (int i = 5; i >= 0; i--)
-                X.Add(earlyDeadlineAlpha[i].Last().interval.R);
+                X1.Add(earlyDeadlineAlpha[i].Last().interval.R);
+            List<double> X2 = new List<double>();
+            for (int i = 0; i < 6; i++)
+                X2.Add(lateDeadlineAlpha[i][0].interval.R);
+            for (int i = 5; i >= 0; i--)
+                X2.Add(lateDeadlineAlpha[i][0].interval.L);
             List<double> Y = new List<double>() { 0, 0.2, 0.4, 0.6, 0.8, 1, 1, 0.8, 0.6, 0.4, 0.2, 0 };
             for(int i=0;i<12;i++)
-                chart1.Series[0].Points.AddXY(X[i], Y[i]);
+                chart1.Series[0].Points.AddXY(X1[i], Y[i]);
+            for (int i = 0; i < 12; i++)
+                chart1.Series[1].Points.AddXY(X2[i], Y[i]);
+            if (T_ != null)
+            {
+                chart1.Series[2].Points.AddXY(T_, 0);
+                chart1.Series[2].Points.AddXY(T_, 1);
+            }
             #endregion
 
         }

@@ -28,15 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.WorkStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.WorkEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,13 +51,12 @@
             this.M2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.P2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -68,7 +73,7 @@
             this.файлToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1509, 48);
+            this.menuStrip1.Size = new System.Drawing.Size(1509, 40);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -78,20 +83,20 @@
             this.открытьToolStripMenuItem,
             this.сохранитьToolStripMenuItem});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
-            this.файлToolStripMenuItem.Size = new System.Drawing.Size(90, 40);
+            this.файлToolStripMenuItem.Size = new System.Drawing.Size(90, 36);
             this.файлToolStripMenuItem.Text = "Файл";
             // 
             // открытьToolStripMenuItem
             // 
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(259, 44);
             this.открытьToolStripMenuItem.Text = "открыть";
             this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
             // 
             // сохранитьToolStripMenuItem
             // 
             this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(259, 44);
             this.сохранитьToolStripMenuItem.Text = "сохранить";
             this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
             // 
@@ -100,14 +105,16 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 48);
+            this.tabControl1.Location = new System.Drawing.Point(0, 40);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1509, 776);
+            this.tabControl1.Size = new System.Drawing.Size(1509, 784);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.textBox1);
+            this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.label2);
@@ -116,10 +123,47 @@
             this.tabPage1.Location = new System.Drawing.Point(8, 39);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1493, 729);
+            this.tabPage1.Size = new System.Drawing.Size(1493, 737);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "таблица работ";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(1229, 182);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(0, 25);
+            this.label3.TabIndex = 5;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1234, 130);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(138, 44);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "вычислить";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(682, 130);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(401, 25);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Вычислить время выполнения проекта\r\n";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(-1, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(556, 50);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Заполните таблицу работ нечеткими числами, в виде:\r\n[p1(i, j), m1(i, j), m2(i, j)" +
+    " p2(i, j)]";
             // 
             // dataGridView1
             // 
@@ -185,14 +229,48 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label5);
             this.tabPage2.Controls.Add(this.chart1);
             this.tabPage2.Location = new System.Drawing.Point(8, 39);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1493, 729);
+            this.tabPage2.Size = new System.Drawing.Size(1493, 737);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "полный отчет";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // chart1
+            // 
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
+            this.chart1.Location = new System.Drawing.Point(6, 6);
+            this.chart1.Name = "chart1";
+            series4.BorderWidth = 5;
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series4.Color = System.Drawing.Color.Lime;
+            series4.Legend = "Legend1";
+            series4.Name = "Early Time";
+            series5.BorderWidth = 5;
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series5.Color = System.Drawing.Color.Red;
+            series5.Legend = "Legend1";
+            series5.Name = "Late Time";
+            series6.BorderWidth = 3;
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series6.Color = System.Drawing.Color.Blue;
+            series6.Legend = "Legend1";
+            series6.Name = "T*";
+            this.chart1.Series.Add(series4);
+            this.chart1.Series.Add(series5);
+            this.chart1.Series.Add(series6);
+            this.chart1.Size = new System.Drawing.Size(917, 634);
+            this.chart1.TabIndex = 0;
+            this.chart1.Text = "chart1";
             // 
             // openFileDialog1
             // 
@@ -202,62 +280,29 @@
             // 
             this.saveFileDialog1.Filter = "Json files (*.json)|*.json|Text files (*.txt)|*.txt";
             // 
-            // label1
+            // label4
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(-1, 3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(556, 50);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Заполните таблицу работ нечеткими числами, в виде:\r\n[p1(i, j), m1(i, j), m2(i, j)" +
-    " p2(i, j)]";
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(682, 71);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(305, 25);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Директивный срок работы T*";
             // 
-            // label2
+            // textBox1
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(680, 71);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(401, 25);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Вычислить время выполнения проекта\r\n";
+            this.textBox1.Location = new System.Drawing.Point(1011, 69);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(117, 31);
+            this.textBox1.TabIndex = 7;
             // 
-            // button1
+            // label5
             // 
-            this.button1.Location = new System.Drawing.Point(1232, 71);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(138, 44);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "вычислить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(1227, 123);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(70, 50);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "label3\r\nlabel3";
-            // 
-            // chart1
-            // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(6, 6);
-            this.chart1.Name = "chart1";
-            series1.BorderWidth = 5;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StepLine;
-            series1.Color = System.Drawing.Color.Lime;
-            series1.Legend = "Legend1";
-            series1.Name = "Project Time";
-            this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(917, 634);
-            this.chart1.TabIndex = 0;
-            this.chart1.Text = "chart1";
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(930, 35);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(0, 25);
+            this.label5.TabIndex = 1;
             // 
             // Form1
             // 
@@ -276,6 +321,7 @@
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -305,6 +351,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }
 
