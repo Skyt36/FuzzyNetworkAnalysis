@@ -151,7 +151,7 @@ namespace FuzzyNetworkAnalysis
             var worksOrdered = works.OrderBy(x => x.Start).ThenBy(x => x.End).ToList();
             bool failed = false;
             foreach (var work in worksOrdered)
-                failed = work == null || work.Start == null || work.End == null || work.number.p1 == null || work.number.m1 == null || work.number.m2 == null || work.number.p2 == null;
+                failed = failed || work == null || work.Start == null || work.End == null || work.number.p1 == null || work.number.m1 == null || work.number.m2 == null || work.number.p2 == null;
             if (failed)
             {
                 label2.Text = "Вычислить время выполнения проекта\n\nВ таблице не должно быть пустых ячеек";
