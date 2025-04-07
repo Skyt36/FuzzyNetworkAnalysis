@@ -247,18 +247,51 @@ namespace FuzzyNetworkAnalysis
 
             #endregion
             #region Оценка риска
-            double? T_ = null;
+            double
+                Tp1 = 0,
+                Tm1 = 0,
+                Tm2 = 0,
+                Tp2 = 0;
             if(double.TryParse(textBox1.Text,out double T))
-                T_= T;
+                Tp1 = T;
+            if (double.TryParse(textBox2.Text, out T))
+                Tm1 = T;
+            if (double.TryParse(textBox3.Text, out T))
+                Tm2 = T;
+            if (double.TryParse(textBox4.Text, out T))
+                Tp2 = T;
 
             double Sum = 0;
-            for (int i = 0; i < 6; i++)
+            if (0 < Tp1 && Tp1 <= Tm1 && Tm1 <= Tm2 && Tm2 <= Tp2)
             {
-                if (T_ < earlyDeadlineAlpha[i].Last().interval.L)
-                    Sum += 0.2 * i;
-                else if (T_ <= earlyDeadlineAlpha[i].Last().interval.R)
-                    Sum += 0.2 * i * (earlyDeadlineAlpha[i].Last().interval.R - T_) / (earlyDeadlineAlpha[i].Last().interval.R - earlyDeadlineAlpha[i].Last().interval.L) ?? 0;
+                List<FuzzyInterval> T_alphasrezy = new List<FuzzyInterval>();
+                for (int i = 0; i < 6; i++)
+                {
+                    double alpha = 0.2 * i;
+                    T_alphasrezy.Add(new FuzzyInterval(
+                        Tp1 + (Tm1 - Tp1) * alpha,
+                        Tp2 - (Tp2 - Tm2) * alpha
+                        ));
+                }
+
+                for (int i = 0; i < 6; i++)
+                {
+                    /*
+                    if (T < earlyDeadlineAlpha[i].Last().interval.L)
+                        Sum += 0.2 * i;
+                    else if (T_ <= earlyDeadlineAlpha[i].Last().interval.R)
+                        Sum += 0.2 * i * (earlyDeadlineAlpha[i].Last().interval.R - T_) / (earlyDeadlineAlpha[i].Last().interval.R - earlyDeadlineAlpha[i].Last().interval.L) ?? 0;
+                    */
+
+                    if (T_alphasrezy[i].R < earlyDeadlineAlpha[i].Last().interval.L)
+                        Sum += 0.2 * i;
+                    else if (T_alphasrezy[i].R < earlyDeadlineAlpha[i].Last().interval.R)
+                        Sum += 0.2 * i * (earlyDeadlineAlpha[i].Last().interval.R - T_alphasrezy[i].R) / (earlyDeadlineAlpha[i].Last().interval.R - Math.Max(earlyDeadlineAlpha[i].Last().interval.L, T_alphasrezy[i].L));
+                    else if (T_alphasrezy[i].L < earlyDeadlineAlpha[i].Last().interval.R)
+                        Sum += 0.2 * i * (Math.Max(earlyDeadlineAlpha[i].Last().interval.L, T_alphasrezy[i].L) - T_alphasrezy[i].L) / (T_alphasrezy[i].R - T_alphasrezy[i].L);
+                }
             }
+
             Sum /= 3;
             #endregion
             #region Вывод результатов
@@ -296,10 +329,12 @@ namespace FuzzyNetworkAnalysis
                 chart1.Series[0].Points.AddXY(X1[i], Y[i]);
             for (int i = 0; i < 12; i++)
                 chart1.Series[1].Points.AddXY(X2[i], Y[i]);
-            if (T_ != null)
+            if (0 < Tp1 && Tp1 <= Tm1 && Tm1 <= Tm2 && Tm2 <= Tp2)
             {
-                chart1.Series[2].Points.AddXY(T_, 0);
-                chart1.Series[2].Points.AddXY(T_, 1);
+                chart1.Series[2].Points.AddXY(Tp1, 0);
+                chart1.Series[2].Points.AddXY(Tm1, 1);
+                chart1.Series[2].Points.AddXY(Tm2, 1);
+                chart1.Series[2].Points.AddXY(Tp2, 0);
             }
             #endregion
 
