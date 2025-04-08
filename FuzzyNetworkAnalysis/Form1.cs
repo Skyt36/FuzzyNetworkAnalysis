@@ -285,10 +285,8 @@ namespace FuzzyNetworkAnalysis
 
                     if (T_alphasrezy[i].R < earlyDeadlineAlpha[i].Last().interval.L)
                         Sum += 0.2 * i;
-                    else if (T_alphasrezy[i].R < earlyDeadlineAlpha[i].Last().interval.R)
-                        Sum += 0.2 * i * (earlyDeadlineAlpha[i].Last().interval.R - T_alphasrezy[i].R) / (earlyDeadlineAlpha[i].Last().interval.R - earlyDeadlineAlpha[i].Last().interval.L);
-                    else if (T_alphasrezy[i].L < earlyDeadlineAlpha[i].Last().interval.R)
-                        Sum += 0.2 * i * (earlyDeadlineAlpha[i].Last().interval.R - T_alphasrezy[i].L) / (T_alphasrezy[i].R - Math.Max(earlyDeadlineAlpha[i].Last().interval.L, T_alphasrezy[i].L));
+                    else if (T_alphasrezy[i].R +0.000001 < earlyDeadlineAlpha[i].Last().interval.R)
+                        Sum += 0.2 * i * (earlyDeadlineAlpha[i].Last().interval.R - T_alphasrezy[i].R) / (earlyDeadlineAlpha[i].Last().interval.R - Math.Min(earlyDeadlineAlpha[i].Last().interval.L, T_alphasrezy[i].L));
                 }
             }
 
