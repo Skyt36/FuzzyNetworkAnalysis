@@ -285,9 +285,14 @@ namespace FuzzyNetworkAnalysis
 
                     if (T_alphasrezy[i].R < earlyDeadlineAlpha[i].Last().interval.L)
                         Sum += 0.2 * i;
-                    else if (T_alphasrezy[i].R +0.000001 < earlyDeadlineAlpha[i].Last().interval.R)
+                    else if (T_alphasrezy[i].R + 0.000001 < earlyDeadlineAlpha[i].Last().interval.R)
                         Sum += 0.2 * i * (earlyDeadlineAlpha[i].Last().interval.R - T_alphasrezy[i].R) / (earlyDeadlineAlpha[i].Last().interval.R - Math.Min(earlyDeadlineAlpha[i].Last().interval.L, T_alphasrezy[i].L));
                 }
+                label7.Text = "";
+            }
+            else
+            {
+                label7.Text = "Введите границы нечёткого числа по возрастанию";
             }
 
             Sum /= 3;
@@ -318,21 +323,21 @@ namespace FuzzyNetworkAnalysis
             for (int i = 5; i >= 0; i--)
                 X1.Add(earlyDeadlineAlpha[i].Last().interval.R);
             List<double> X2 = new List<double>();
-            for (int i = 0; i < 6; i++)
-                X2.Add(lateDeadlineAlpha[i][0].interval.R);
-            for (int i = 5; i >= 0; i--)
-                X2.Add(lateDeadlineAlpha[i][0].interval.L);
+            //for (int i = 0; i < 6; i++)
+            //    X2.Add(lateDeadlineAlpha[i][0].interval.R);
+            //for (int i = 5; i >= 0; i--)
+            //    X2.Add(lateDeadlineAlpha[i][0].interval.L);
             List<double> Y = new List<double>() { 0, 0.2, 0.4, 0.6, 0.8, 1, 1, 0.8, 0.6, 0.4, 0.2, 0 };
             for(int i=0;i<12;i++)
                 chart1.Series[0].Points.AddXY(X1[i], Y[i]);
-            for (int i = 0; i < 12; i++)
-                chart1.Series[1].Points.AddXY(X2[i], Y[i]);
+            //for (int i = 0; i < 12; i++)
+            //    chart1.Series[1].Points.AddXY(X2[i], Y[i]);
             if (0 < Tp1 && Tp1 <= Tm1 && Tm1 <= Tm2 && Tm2 <= Tp2)
             {
-                chart1.Series[2].Points.AddXY(Tp1, 0);
-                chart1.Series[2].Points.AddXY(Tm1, 1);
-                chart1.Series[2].Points.AddXY(Tm2, 1);
-                chart1.Series[2].Points.AddXY(Tp2, 0);
+                chart1.Series[1].Points.AddXY(Tp1, 0);
+                chart1.Series[1].Points.AddXY(Tm1, 1);
+                chart1.Series[1].Points.AddXY(Tm2, 1);
+                chart1.Series[1].Points.AddXY(Tp2, 0);
             }
             #endregion
 
