@@ -301,10 +301,31 @@ namespace FuzzyNetworkAnalysis
             String criticalTrackString = "";
             foreach (var track in CriticalTrack.Last())
                 criticalTrackString += track.ToString() + ", ";
-            label2.Text = "Вычислить время выполнения проекта\n\n" +
+            if (0 < Tp1 && Tp1 <= Tm1 && Tm1 <= Tm2 && Tm2 <= Tp2){
+                label2.Text = "Вычислить время выполнения проекта\n\n" +
                 "Время выполнения проекта в виде нечеткого числа:\n" +
                 "Критический путь:\n" +
                 $"Оценка риска: {String.Format("{0:0.##}", 100 * Sum)}%";
+                if(double.TryParse(textBox5.Text,out double risk) && risk >= 0 && risk <= 100)
+                {
+                    if (risk >= Sum * 100)
+                    {
+                        label8.Text = "Допустимый риск (%)\n\n" +
+                            "Проект принимается";
+                    }
+                    else
+                    {
+                        label8.Text = "Допустимый риск (%)\n\n" +
+                            "Проект не принимается";
+                    }
+                }
+            }
+            else
+            {
+                label2.Text = "Вычислить время выполнения проекта\n\n" +
+                "Время выполнения проекта в виде нечеткого числа:\n" +
+                "Критический путь:\n";
+            }
             label3.Text = $"[{earlyDeadlineAlpha[0].Last().interval.L}, {earlyDeadlineAlpha[5].Last().interval.L}, {earlyDeadlineAlpha[5].Last().interval.R}, {earlyDeadlineAlpha[0].Last().interval.R}]\n" +
                 criticalTrackString;
             String label5Text = "";
